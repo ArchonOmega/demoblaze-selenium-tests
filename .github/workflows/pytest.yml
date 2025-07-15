@@ -24,18 +24,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: 📥 Install Chrome and ChromeDriver
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wget unzip xvfb libxi6 libgconf-2-4
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo apt install -y ./google-chrome-stable_current_amd64.deb
-        CHROME_VERSION=$(google-chrome --version | grep -oP '[0-9.]+' | head -1)
-        wget https://chromedriver.storage.googleapis.com/${CHROME_VERSION%.*}/chromedriver_linux64.zip || wget https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip
-        unzip chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin/
-        sudo chmod +x /usr/local/bin/chromedriver
-
     - name: ⚙️ Run tests with pytest (Headless Chrome)
       env:
         PYTHONUNBUFFERED: 1

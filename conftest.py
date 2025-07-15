@@ -1,6 +1,7 @@
 import pytest
 import datetime
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 @pytest.fixture
 def driver(request):
@@ -8,9 +9,8 @@ def driver(request):
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(options=options)
     yield driver
-    # This executes after the test runs
     outcome = request.node.__dict__.get("test_outcome", None)
     if outcome and outcome.failed:
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
