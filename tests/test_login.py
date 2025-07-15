@@ -1,0 +1,19 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+
+def test_login():
+    driver = webdriver.Chrome()
+    driver.get("https://www.demoblaze.com/")
+    time.sleep(2)
+
+    driver.find_element(By.ID, "login2").click()
+    time.sleep(2)
+
+    driver.find_element(By.ID, "loginusername").send_keys("testuserkill")
+    driver.find_element(By.ID, "loginpassword").send_keys("testpasskill")
+    driver.find_element(By.XPATH, "//button[text()='Log in']").click()
+    time.sleep(5)
+
+    assert "Welcome" in driver.page_source
+    driver.quit()
