@@ -1,4 +1,5 @@
 import pytest
+import datetime
 from selenium import webdriver
 
 @pytest.fixture
@@ -8,7 +9,8 @@ def driver(request):
     # This executes after the test runs
     outcome = request.node.__dict__.get("test_outcome", None)
     if outcome and outcome.failed:
-        screenshot_name = f"screenshots/{request.node.name}.png"
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        screenshot_name = f"screenshots/{request.node.name}_{timestamp}.png"
         driver.save_screenshot(screenshot_name)
         print(f"Screenshot saved to {screenshot_name}")
     driver.quit()
