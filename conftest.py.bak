@@ -5,21 +5,18 @@ from selenium import webdriver
 def driver(request):
     driver = webdriver.Chrome()
     yield driver
-    # This block runs after the test is done
-    if hasattr(request.node, "rep_call") and request.node.rep_call.failed:
+    # This executes after the test runs
+    outcome = request.node.__dict__.get("test_outcome", None)
+    if outcome and outcome.failed:
         screenshot_name = f"screenshots/{request.node.name}.png"
         driver.save_screenshot(screenshot_name)
         print(f"Screenshot saved to {screenshot_name}")
     driver.quit()
 
-
-# This hook stores test report results on the test node
+# Store result in node dict cleanly
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
-    # Run all other hooks and get the report object
     outcome = yield
-    rep = outcome.get_result()
-
-    # Save the result for use in the fixture
-    if rep.when == "call":
-        setattr(item, "rep_call", rep)
+    result = outcome.get_result()
+    if result.when == "call":
+        item.test_outcome = result
