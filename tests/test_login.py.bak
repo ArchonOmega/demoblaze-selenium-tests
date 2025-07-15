@@ -11,7 +11,7 @@ def test_login():
     time.sleep(2)
 
     driver.find_element(By.ID, "loginusername").send_keys("testuserkill")
-    driver.find_element(By.ID, "loginpassword").send_keys("testpasspass")
+    driver.find_element(By.ID, "loginpassword").send_keys("testpasskill")
     driver.find_element(By.XPATH, "//button[text()='Log in']").click()
     time.sleep(5)
 
